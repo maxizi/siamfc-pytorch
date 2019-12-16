@@ -110,7 +110,7 @@ class TrackerSiamFC(Tracker):
         return namedtuple('Config', cfg.keys())(**cfg)
     
     @torch.no_grad()
-    def init(self, img, box):
+    def init(self, img, box, depthimage=None):
         # set to evaluation mode
         self.net.eval()
 
@@ -152,7 +152,7 @@ class TrackerSiamFC(Tracker):
         self.kernel = self.net.backbone(z)
     
     @torch.no_grad()
-    def update(self, img):
+    def update(self, img, depthimage=None):
         # set to evaluation mode
         self.net.eval()
 
