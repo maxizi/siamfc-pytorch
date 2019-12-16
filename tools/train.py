@@ -5,9 +5,9 @@ from got10k.datasets import *
 
 from siamfc import TrackerSiamFC
 
-
+ 
 if __name__ == '__main__':
-    root_dir = os.path.expanduser('/media/maxi/external/datasets/GOT-10k')
+    root_dir = os.path.expanduser('~/datasets/GOT-10k')
     seqs = GOT10k(root_dir, subset='train', return_meta=True)
 
     tracker = TrackerSiamFC()
