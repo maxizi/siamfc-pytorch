@@ -8,10 +8,10 @@ from siamfc import TrackerSiamFC
 
 
 if __name__ == '__main__':
-    seq_dir = os.path.expanduser('~/data/OTB/Crossing')
+    seq_dir = os.path.expanduser('~/datasets/OTB2015/Crossing/')
     img_files = sorted(glob.glob(seq_dir + 'img/*.jpg'))
     anno = np.loadtxt(seq_dir + 'groundtruth_rect.txt')
     
-    net_path = 'pretrained/siamfc_alexnet_e50.pth'
+    net_path = '../pretrained/siamfc_alexnet_e50.pth'
     tracker = TrackerSiamFC(net_path=net_path)
     tracker.track(img_files, anno[0], visualize=True)
