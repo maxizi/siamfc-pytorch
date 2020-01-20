@@ -21,6 +21,9 @@ from .losses import BalancedLoss
 from .datasets import Pair
 from .transforms import SiamFCTransforms
 
+from torchsummary import summary
+from torch.utils.tensorboard import SummaryWriter
+
 
 __all__ = ['TrackerSiamFC']
 
@@ -53,12 +56,14 @@ class TrackerSiamFC(Tracker):
             backbone=AlexNetV1(),
             head=SiamFC(self.cfg.out_scale))
         ops.init_weights(self.net)
-        
+
         # load checkpoint if provided
         if net_path is not None:
             self.net.load_state_dict(torch.load(
                 net_path, map_location=lambda storage, loc: storage))
         self.net = self.net.to(self.device)
+
+        summary(self.net, [(3,127,127), (3,255,255)])
 
         # setup criterion
         self.criterion = BalancedLoss()
@@ -75,6 +80,9 @@ class TrackerSiamFC(Tracker):
             self.cfg.ultimate_lr / self.cfg.initial_lr,
             1.0 / self.cfg.epoch_num)
         self.lr_scheduler = ExponentialLR(self.optimizer, gamma)
+
+        self.writer = SummaryWriter('/home/maxi/Downloads/test')
+
 
     def parse_args(self, **kwargs):
         # default parameters
@@ -96,7 +104,7 @@ class TrackerSiamFC(Tracker):
             # train parameters
             'epoch_num': 50,
             'batch_size': 8,
-            'num_workers': 32,
+            'num_workers': 32, # change back to 32 when really training
             'initial_lr': 1e-2,
             'ultimate_lr': 1e-5,
             'weight_decay': 5e-4,
@@ -293,6 +301,8 @@ class TrackerSiamFC(Tracker):
                 print('Epoch: {} [{}/{}] Loss: {:.5f}'.format(
                     epoch + 1, it + 1, len(dataloader), loss))
                 sys.stdout.flush()
+                self.writer.add_scalar('Loss/train', loss, it+epoch*1166)
+                
             
             # update lr at each epoch
             self.lr_scheduler.step(epoch=epoch)

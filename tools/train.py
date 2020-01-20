@@ -1,3 +1,8 @@
+# run these two commands to add paths
+# export PYTHONPATH=/home/maxi/masterthesis/5_Evaluation/got_toolkit:$PYTHONPATH
+# export PYTHONPATH=/home/maxi/masterthesis/4_Code/repos/siamfc-pytorch:$PYTHONPATH
+
+
 from __future__ import absolute_import
 
 import os
