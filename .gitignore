@@ -7,3 +7,4 @@ reports/
 cache/
 checkpoints/
 !.gitignore
+pretrained/
